@@ -1,0 +1,36 @@
+databases:
+  - name: elkon-yard-bot-db
+    plan: free
+
+services:
+  - type: web
+    name: elkon-yard-calculator-bot
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: elkon-yard-bot-db
+          property: connectionString
+      - key: BOT_TOKEN
+        sync: false
+      - key: WEBHOOK_SECRET
+        sync: false
+      - key: MIN_CYCLE_M3
+        value: "0.20"
+      - key: MAX_CYCLE_M3
+        value: "0.5"
+      - key: CEMENT_KG_PER_YD3
+        value: "238"
+      - key: GRAVEL_KG_PER_YD3
+        value: "839"
+      - key: SAND_KG_PER_YD3
+        value: "650"
+      - key: WATER_KG_PER_YD3
+        value: "100"
+      - key: MAX_ORDER_YD3
+        value: "100"
