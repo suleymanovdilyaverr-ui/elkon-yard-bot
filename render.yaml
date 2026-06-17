@@ -16,21 +16,17 @@ services:
         fromDatabase:
           name: elkon-yard-bot-db
           property: connectionString
+      - key: PYTHON_VERSION
+        value: "3.13.5"
       - key: BOT_TOKEN
         sync: false
       - key: WEBHOOK_SECRET
+        sync: false
+      - key: OPERATOR_PASSWORD
         sync: false
       - key: MIN_CYCLE_M3
         value: "0.20"
       - key: MAX_CYCLE_M3
         value: "0.5"
-      - key: CEMENT_KG_PER_YD3
-        value: "238"
-      - key: GRAVEL_KG_PER_YD3
-        value: "839"
-      - key: SAND_KG_PER_YD3
-        value: "650"
-      - key: WATER_KG_PER_YD3
-        value: "100"
       - key: MAX_ORDER_YD3
         value: "100"
