@@ -1,37 +1,59 @@
-# ELKON Multi-Mix Concrete Bot
+# 28 CONCRETE Telegram Bot (English Version)
 
-## Что добавлено
+This is the fully English version of the Telegram bot for **28 CONCRETE**.
 
-- 10 сертифицированных рецептур: 3000–5000 PSI, Air и Non-Air.
-- Расчёт yd³ → m³ для ELKON.
-- Рецепт на 1 m³ в килограммах.
-- Материалы на весь заказ.
-- Расчёт каждого цикла отдельно.
-- Предупреждение о слишком маленьком последнем цикле.
-- История расчётов в PostgreSQL.
-- Информационное меню продажника.
-- Производственное меню под паролем.
+## Features
 
-## Важные переменные Render
+- Sales menu in English
+- Production calculator in English
+- 10 certified concrete recipes
+  - 3000 PSI: Air / Non-Air
+  - 3500 PSI: Air / Non-Air
+  - 4000 PSI: Air / Non-Air
+  - 4500 PSI: Air / Non-Air
+  - 5000 PSI: Air / Non-Air
+- Password protection for the production area
+- Accepts `7.15` and `7,15`
+- Calculates total cubic meters for ELKON
+- Shows recipe per **1 m³**
+- Shows total materials for the full order
+- Shows each cycle separately
+- Warns if the last cycle is smaller than the configured minimum
+- Stores order history in PostgreSQL
+- Render-ready webhook deployment
+
+## Main Menus
+
+### Sales Menu
+- Retail Prices
+- FOB Prices
+- Additives
+- Short Load Fee
+- Hours & Terms
+
+### Production Menu (password protected)
+- New Calculation
+- History
+- Logout
+
+## Required Render Environment Variables
 
 - `BOT_TOKEN`
 - `WEBHOOK_SECRET`
-- `OPERATOR_PASSWORD` — установить значение `Aslan`
-- `DATABASE_URL` — подключается из Render PostgreSQL
+- `OPERATOR_PASSWORD`
+- `DATABASE_URL` (normally added automatically by Render)
 
-Пароль не нужно писать в открытом GitHub-репозитории. Он хранится только в Render Environment.
+## Deploy on Render
 
-## Обновление существующего проекта
+1. Upload these files to GitHub.
+2. In Render choose **New → Blueprint**.
+3. Connect the repository.
+4. Enter:
+   - `BOT_TOKEN`
+   - `WEBHOOK_SECRET`
+   - `OPERATOR_PASSWORD` = `Aslan`
+5. Deploy.
 
-1. Замените в GitHub файлы `main.py`, `requirements.txt`, `render.yaml` и `README.md`.
-2. В Render → Environment добавьте `OPERATOR_PASSWORD` со значением `Aslan`.
-3. Нажмите Manual Deploy → Deploy latest commit.
-4. После запуска откройте URL сервиса и убедитесь, что `status` равен `ok`.
+## Health Check
 
-## Примечание по добавкам
-
-На сертифицированных листах добавки указаны как `oz/yard`. Бот сохраняет эту единицу. Не переводите их в литры без подтверждения, являются ли это fluid ounces, и без плотности конкретного продукта.
-
-## Short Load Fee
-
-Предоставлены тарифы только для 1–5 yd³. Для 6–9 yd³ бот показывает предупреждение «уточнить у руководителя», потому что точные суммы не были предоставлены.
+Open the root URL of the service. It should return JSON with status `ok`.

@@ -77,10 +77,10 @@ RECIPES: dict[str, dict] = {
         "slump_in": Decimal("6"),
         "design_air_pct": Decimal("2.5"),
         "materials_lb": {
-            "Цемент": Decimal("450"),
-            "Щебень": Decimal("1977"),
-            "Песок": Decimal("1447"),
-            "Вода": Decimal("190"),
+            "Cement": Decimal("450"),
+            "Stone": Decimal("1977"),
+            "Sand": Decimal("1447"),
+            "Water": Decimal("190"),
         },
         "admixtures_oz": {
             "Sikament 475": Decimal("31.50"),
@@ -95,10 +95,10 @@ RECIPES: dict[str, dict] = {
         "slump_in": Decimal("5"),
         "design_air_pct": Decimal("5.0"),
         "materials_lb": {
-            "Цемент": Decimal("470"),
-            "Щебень": Decimal("1860"),
-            "Песок": Decimal("1416"),
-            "Вода": Decimal("198"),
+            "Cement": Decimal("470"),
+            "Stone": Decimal("1860"),
+            "Sand": Decimal("1416"),
+            "Water": Decimal("198"),
         },
         "admixtures_oz": {
             "Sikament 475": Decimal("32.90"),
@@ -113,10 +113,10 @@ RECIPES: dict[str, dict] = {
         "slump_in": Decimal("6"),
         "design_air_pct": Decimal("2.5"),
         "materials_lb": {
-            "Цемент": Decimal("480"),
-            "Щебень": Decimal("1930"),
-            "Песок": Decimal("1440"),
-            "Вода": Decimal("201"),
+            "Cement": Decimal("480"),
+            "Stone": Decimal("1930"),
+            "Sand": Decimal("1440"),
+            "Water": Decimal("201"),
         },
         "admixtures_oz": {
             "Sikament 475": Decimal("33.60"),
@@ -131,10 +131,10 @@ RECIPES: dict[str, dict] = {
         "slump_in": Decimal("6"),
         "design_air_pct": Decimal("5.0"),
         "materials_lb": {
-            "Цемент": Decimal("500"),
-            "Щебень": Decimal("1820"),
-            "Песок": Decimal("1400"),
-            "Вода": Decimal("210"),
+            "Cement": Decimal("500"),
+            "Stone": Decimal("1820"),
+            "Sand": Decimal("1400"),
+            "Water": Decimal("210"),
         },
         "admixtures_oz": {
             "Sikament 475": Decimal("35.00"),
@@ -149,10 +149,10 @@ RECIPES: dict[str, dict] = {
         "slump_in": Decimal("6"),
         "design_air_pct": Decimal("2.5"),
         "materials_lb": {
-            "Цемент": Decimal("525"),
-            "Щебень": Decimal("1850"),
-            "Песок": Decimal("1433"),
-            "Вода": Decimal("220"),
+            "Cement": Decimal("525"),
+            "Stone": Decimal("1850"),
+            "Sand": Decimal("1433"),
+            "Water": Decimal("220"),
         },
         "admixtures_oz": {
             "Sikament 475": Decimal("36.75"),
@@ -167,10 +167,10 @@ RECIPES: dict[str, dict] = {
         "slump_in": Decimal("6"),
         "design_air_pct": Decimal("5.0"),
         "materials_lb": {
-            "Цемент": Decimal("545"),
-            "Щебень": Decimal("1800"),
-            "Песок": Decimal("1332"),
-            "Вода": Decimal("229"),
+            "Cement": Decimal("545"),
+            "Stone": Decimal("1800"),
+            "Sand": Decimal("1332"),
+            "Water": Decimal("229"),
         },
         "admixtures_oz": {
             "Sikament 475": Decimal("38.15"),
@@ -185,10 +185,10 @@ RECIPES: dict[str, dict] = {
         "slump_in": Decimal("6"),
         "design_air_pct": Decimal("2.5"),
         "materials_lb": {
-            "Цемент": Decimal("550"),
-            "Щебень": Decimal("1830"),
-            "Песок": Decimal("1403"),
-            "Вода": Decimal("231"),
+            "Cement": Decimal("550"),
+            "Stone": Decimal("1830"),
+            "Sand": Decimal("1403"),
+            "Water": Decimal("231"),
         },
         "admixtures_oz": {
             "Sikament 475": Decimal("38.50"),
@@ -203,10 +203,10 @@ RECIPES: dict[str, dict] = {
         "slump_in": Decimal("6"),
         "design_air_pct": Decimal("5.0"),
         "materials_lb": {
-            "Цемент": Decimal("564"),
-            "Щебень": Decimal("1780"),
-            "Песок": Decimal("1315"),
-            "Вода": Decimal("237"),
+            "Cement": Decimal("564"),
+            "Stone": Decimal("1780"),
+            "Sand": Decimal("1315"),
+            "Water": Decimal("237"),
         },
         "admixtures_oz": {
             "Sikament 475": Decimal("39.48"),
@@ -221,10 +221,10 @@ RECIPES: dict[str, dict] = {
         "slump_in": Decimal("6"),
         "design_air_pct": Decimal("2.5"),
         "materials_lb": {
-            "Цемент": Decimal("580"),
-            "Щебень": Decimal("1830"),
-            "Песок": Decimal("1344"),
-            "Вода": Decimal("244"),
+            "Cement": Decimal("580"),
+            "Stone": Decimal("1830"),
+            "Sand": Decimal("1344"),
+            "Water": Decimal("244"),
         },
         "admixtures_oz": {
             "Sikament 475": Decimal("40.60"),
@@ -239,10 +239,10 @@ RECIPES: dict[str, dict] = {
         "slump_in": Decimal("6"),
         "design_air_pct": Decimal("5.0"),
         "materials_lb": {
-            "Цемент": Decimal("600"),
-            "Щебень": Decimal("1745"),
-            "Песок": Decimal("1281"),
-            "Вода": Decimal("252"),
+            "Cement": Decimal("600"),
+            "Stone": Decimal("1745"),
+            "Sand": Decimal("1281"),
+            "Water": Decimal("252"),
         },
         "admixtures_oz": {
             "Sikament 475": Decimal("42.00"),
@@ -320,10 +320,10 @@ class OrderState(StatesGroup):
 MAIN_MENU = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="💵 Меню продажника"),
-            KeyboardButton(text="🔐 Производство"),
+            KeyboardButton(text="💵 Sales Menu"),
+            KeyboardButton(text="🔐 Production"),
         ],
-        [KeyboardButton(text="ℹ️ Помощь")],
+        [KeyboardButton(text="ℹ️ Help")],
     ],
     resize_keyboard=True,
 )
@@ -331,26 +331,26 @@ MAIN_MENU = ReplyKeyboardMarkup(
 SALES_MENU = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="💰 Обычные цены"),
-            KeyboardButton(text="🤝 FOB цены"),
+            KeyboardButton(text="💰 Retail Prices"),
+            KeyboardButton(text="🤝 FOB Prices"),
         ],
         [
-            KeyboardButton(text="➕ Добавки"),
+            KeyboardButton(text="➕ Additives"),
             KeyboardButton(text="🚚 Short Load Fee"),
         ],
-        [KeyboardButton(text="🕒 Часы и условия")],
-        [KeyboardButton(text="⬅️ Главное меню")],
+        [KeyboardButton(text="🕒 Hours & Terms")],
+        [KeyboardButton(text="⬅️ Main Menu")],
     ],
     resize_keyboard=True,
 )
 
 OPERATOR_MENU = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="🧮 Новый расчёт")],
-        [KeyboardButton(text="📚 История")],
+        [KeyboardButton(text="🧮 New Calculation")],
+        [KeyboardButton(text="📚 History")],
         [
-            KeyboardButton(text="🔓 Выйти"),
-            KeyboardButton(text="⬅️ Главное меню"),
+            KeyboardButton(text="🔓 Logout"),
+            KeyboardButton(text="⬅️ Main Menu"),
         ],
     ],
     resize_keyboard=True,
@@ -530,10 +530,10 @@ def fmt_decimal(value: Decimal, places: int = 2) -> str:
     quant = Decimal("1").scaleb(-places)
     text = f"{value.quantize(quant, rounding=ROUND_HALF_UP):f}"
     whole, _, fraction = text.partition(".")
-    whole_with_spaces = f"{int(whole):,}".replace(",", " ")
+    whole_with_commas = f"{int(whole):,}"
     if places == 0:
-        return whole_with_spaces
-    return whole_with_spaces + "," + fraction
+        return whole_with_commas
+    return whole_with_commas + "." + fraction
 
 
 def fmt_money(value: Decimal) -> str:
@@ -545,19 +545,20 @@ def fmt_money(value: Decimal) -> str:
 def parse_yards(text: str) -> Decimal:
     cleaned = text.strip().lower().replace(",", ".")
     cleaned = cleaned.replace("yd³", "").replace("yd3", "")
+    cleaned = cleaned.replace("yd³", "").replace("yd3", "")
     cleaned = cleaned.replace("yards", "").replace("yard", "")
     cleaned = re.sub(r"\s+", "", cleaned)
 
     try:
         value = Decimal(cleaned)
     except InvalidOperation as exc:
-        raise ValueError("Введите число, например 7.15 или 7,15.") from exc
+        raise ValueError("Enter a number, for example 7.15 or 7,15.") from exc
 
     if value <= 0:
-        raise ValueError("Объём должен быть больше нуля.")
+        raise ValueError("Volume must be greater than zero.")
     if value > MAX_ORDER_YD3:
         raise ValueError(
-            f"Максимум одного расчёта: {fmt_decimal(MAX_ORDER_YD3, 2)} yd³."
+            f"Maximum for one calculation: {fmt_decimal(MAX_ORDER_YD3, 2)} yd³."
         )
     return value
 
@@ -647,94 +648,94 @@ def build_summary(calc: dict, order_id: int | None = None) -> str:
     )
     partial_cycles = len(cycles) - full_cycles
 
-    title = "🧱 <b>ПРОИЗВОДСТВЕННЫЙ РАСЧЁТ</b>"
+    title = "🧱 <b>PRODUCTION CALCULATION</b>"
     if order_id is not None:
         title += f" №{order_id}"
 
     lines = [
         title,
         "",
-        f"Смесь: <b>{recipe['name']}</b>",
+        f"Mix: <b>{recipe['name']}</b>",
         f"Design air: {fmt_decimal(recipe['design_air_pct'], 1)}%",
         f"Design slump: {fmt_decimal(recipe['slump_in'], 0)} in",
-        f"Заказ: <b>{fmt_decimal(calc['yards'], 3)} yd³</b>",
-        f"Ввести в ELKON: <b>{fmt_decimal(calc['total_m3'], 6)} м³</b>",
+        f"Order: <b>{fmt_decimal(calc['yards'], 3)} yd³</b>",
+        f"Enter in ELKON: <b>{fmt_decimal(calc['total_m3'], 6)} m³</b>",
         "",
-        "🔄 <b>ЦИКЛЫ</b>",
-        f"Полных циклов по {fmt_decimal(MAX_CYCLE_M3, 3)} м³: {full_cycles}",
-        f"Неполных циклов: {partial_cycles}",
-        f"Всего циклов: <b>{len(cycles)}</b>",
-        f"Последний цикл: <b>{fmt_decimal(calc['last_cycle'], 6)} м³</b>",
+        "🔄 <b>CYCLES</b>",
+        f"Full cycles of {fmt_decimal(MAX_CYCLE_M3, 3)} m³: {full_cycles}",
+        f"Partial cycles: {partial_cycles}",
+        f"Total cycles: <b>{len(cycles)}</b>",
+        f"Last cycle: <b>{fmt_decimal(calc['last_cycle'], 6)} m³</b>",
     ]
 
     if calc["has_warning"]:
         lines += [
             "",
-            "⚠️ <b>ВНИМАНИЕ</b>",
-            f"Последний цикл меньше установленного минимума "
-            f"{fmt_decimal(MIN_CYCLE_M3, 3)} м³.",
-            "Не запускайте производство без подтверждения ответственного лица.",
+            "⚠️ <b>WARNING</b>",
+            f"The last cycle is below the configured minimum of "
+            f"{fmt_decimal(MIN_CYCLE_M3, 3)} m³.",
+            "Do not start production without approval from the responsible person.",
         ]
     else:
-        lines += ["", "✅ Последний цикл допустим."]
+        lines += ["", "✅ The last cycle is acceptable."]
 
-    lines += ["", "⚙️ <b>РЕЦЕПТ ДЛЯ ELKON НА 1 м³</b>"]
+    lines += ["", "⚙️ <b>ELKON RECIPE PER 1 m³</b>"]
     for name, value in calc["kg_per_m3"].items():
-        if name == "Вода":
+        if name == "Water":
             lines.append(
-                f"{name}: <b>{fmt_decimal(value, 2)} кг/м³ "
-                f"(≈ {fmt_decimal(value, 2)} л/м³)</b>"
+                f"{name}: <b>{fmt_decimal(value, 2)} kg/m³ "
+                f"(≈ {fmt_decimal(value, 2)} L/m³)</b>"
             )
         else:
-            lines.append(f"{name}: <b>{fmt_decimal(value, 2)} кг/м³</b>")
+            lines.append(f"{name}: <b>{fmt_decimal(value, 2)} kg/m³</b>")
 
-    lines += ["", "⚖️ <b>МАТЕРИАЛЫ НА ВЕСЬ ЗАКАЗ</b>"]
+    lines += ["", "⚖️ <b>TOTAL MATERIALS FOR THE ORDER</b>"]
     for name, value in calc["materials_total_kg"].items():
-        if name == "Вода":
+        if name == "Water":
             lines.append(
-                f"{name}: <b>{fmt_decimal(value, 2)} кг "
-                f"(≈ {fmt_decimal(value, 2)} л)</b>"
+                f"{name}: <b>{fmt_decimal(value, 2)} kg "
+                f"(≈ {fmt_decimal(value, 2)} L)</b>"
             )
         else:
-            lines.append(f"{name}: <b>{fmt_decimal(value, 2)} кг</b>")
+            lines.append(f"{name}: <b>{fmt_decimal(value, 2)} kg</b>")
     lines.append(
-        f"Общий вес: <b>{fmt_decimal(sum(calc['materials_total_kg'].values()), 2)} кг</b>"
+        f"Total weight: <b>{fmt_decimal(sum(calc['materials_total_kg'].values()), 2)} kg</b>"
     )
 
-    lines += ["", "🧪 <b>ДОБАВКИ НА ВЕСЬ ЗАКАЗ</b>"]
+    lines += ["", "🧪 <b>TOTAL ADMIXTURES FOR THE ORDER</b>"]
     for name, value in calc["admixtures_total_oz"].items():
         shown = "—" if value == 0 else f"{fmt_decimal(value, 2)} oz"
         lines.append(f"{name}: <b>{shown}</b>")
 
     lines += [
         "",
-        "ℹ️ Добавки показаны в исходной единице сертифицированной рецептуры — oz/yd³. "
-        "Не переводите их в литры без подтверждения типа ounce и плотности продукта.",
+        "ℹ️ Admixtures are shown in the original certified unit — oz/yd³. "
+        "Do not convert them to liters unless the ounce type and product density are confirmed.",
     ]
     return "\n".join(lines)
 
 
 def build_cycle_text(row: dict) -> str:
     lines = [
-        f"🔹 <b>Цикл №{row['number']}</b>",
-        f"Объём: <b>{fmt_decimal(row['m3'], 6)} м³</b> "
+        f"🔹 <b>Cycle #{row['number']}</b>",
+        f"Volume: <b>{fmt_decimal(row['m3'], 6)} m³</b> "
         f"({fmt_decimal(row['yd3'], 6)} yd³)",
         "",
-        "<b>Материалы:</b>",
+        "<b>Materials:</b>",
     ]
     for name, value in row["materials_kg"].items():
-        if name == "Вода":
+        if name == "Water":
             lines.append(
-                f"{name}: {fmt_decimal(value, 2)} кг "
-                f"(≈ {fmt_decimal(value, 2)} л)"
+                f"{name}: {fmt_decimal(value, 2)} kg "
+                f"(≈ {fmt_decimal(value, 2)} L)"
             )
         else:
-            lines.append(f"{name}: {fmt_decimal(value, 2)} кг")
+            lines.append(f"{name}: {fmt_decimal(value, 2)} kg")
     lines.append(
-        f"Вес цикла: <b>{fmt_decimal(sum(row['materials_kg'].values()), 2)} кг</b>"
+        f"Cycle weight: <b>{fmt_decimal(sum(row['materials_kg'].values()), 2)} kg</b>"
     )
 
-    lines += ["", "<b>Добавки:</b>"]
+    lines += ["", "<b>Admixtures:</b>"]
     for name, value in row["admixtures_oz"].items():
         shown = "—" if value == 0 else f"{fmt_decimal(value, 2)} oz"
         lines.append(f"{name}: {shown}")
@@ -768,15 +769,15 @@ def is_authorized(user_id: int) -> bool:
 async def ask_for_password(message: Message, state: FSMContext) -> None:
     if not OPERATOR_PASSWORD:
         await message.answer(
-            "⚠️ Пароль производства ещё не настроен.\n"
-            "Добавьте в Render Environment переменную "
-            "<code>OPERATOR_PASSWORD</code> со значением <code>Aslan</code>."
+            "⚠️ The production password is not configured yet.\n"
+            "Add the Render Environment variable "
+            "<code>OPERATOR_PASSWORD</code> with the value <code>Aslan</code>."
         )
         return
     await state.set_state(AuthState.waiting_password)
     await message.answer(
-        "🔐 Введите пароль для производственного меню.\n\n"
-        "Сообщение с паролем будет удалено ботом, если Telegram разрешит удаление."
+        "🔐 Enter the password for the production menu.\n\n"
+        "The bot will try to delete your password message if Telegram allows it."
     )
 
 
@@ -811,7 +812,7 @@ async def send_calculation(
         )
 
     await message.answer(build_summary(calc, order_id), reply_markup=OPERATOR_MENU)
-    await message.answer("📋 <b>РАСЧЁТ ОТДЕЛЬНО ПО КАЖДОМУ ЦИКЛУ</b>")
+    await message.answer("📋 <b>CALCULATION BY EACH CYCLE</b>")
     cycle_texts = [build_cycle_text(row) for row in calc["cycle_rows"]]
     for chunk in chunk_items(cycle_texts):
         await message.answer(chunk)
@@ -826,30 +827,30 @@ async def send_calculation(
 async def start_handler(message: Message, state: FSMContext) -> None:
     await state.clear()
     await message.answer(
-        "Здравствуйте! Выберите нужный раздел.\n\n"
-        "💵 Меню продажника доступно без пароля.\n"
-        "🔐 Производственные расчёты защищены паролем.",
+        "Hello! Choose the section you need.\n\n"
+        "💵 The sales menu is available without a password.\n"
+        "🔐 Production calculations are password-protected.",
         reply_markup=MAIN_MENU,
     )
 
 
 @router.message(StateFilter("*"), Command("cancel"))
-@router.message(StateFilter("*"), F.text == "❌ Отмена")
-@router.message(StateFilter("*"), F.text == "⬅️ Главное меню")
+@router.message(StateFilter("*"), F.text == "❌ Cancel")
+@router.message(StateFilter("*"), F.text == "⬅️ Main Menu")
 async def cancel_or_main_handler(message: Message, state: FSMContext) -> None:
     await state.clear()
-    await message.answer("Главное меню.", reply_markup=MAIN_MENU)
+    await message.answer("Main menu.", reply_markup=MAIN_MENU)
 
 
-@router.message(F.text == "ℹ️ Помощь")
+@router.message(F.text == "ℹ️ Help")
 async def help_handler(message: Message) -> None:
     await message.answer(
-        "<b>Как пользоваться</b>\n\n"
-        "1. Продажник открывает «Меню продажника» и смотрит цены и условия.\n"
-        "2. Оператор открывает «Производство», вводит пароль, выбирает PSI и Air/Non-Air.\n"
-        "3. Затем вводит ярды: <code>7.15</code> или <code>7,15</code>.\n"
-        "4. Бот выдаёт рецепт на 1 м³ для ELKON, весь заказ и каждый цикл отдельно.\n\n"
-        "Команды оператора: /history и /order НОМЕР.",
+        "<b>How to use</b>\n\n"
+        "1. The salesperson opens the Sales Menu and checks prices and terms.\n"
+        "2. The operator opens Production, enters the password, and chooses PSI and Air/Non-Air.\n"
+        "3. Then enters yards: <code>7.15</code> or <code>7,15</code>.\n"
+        "4. The bot returns the ELKON recipe per 1 m³, the full order, and every cycle separately.\n\n"
+        "Operator commands: /history and /order NUMBER.",
         reply_markup=MAIN_MENU,
     )
 
@@ -859,40 +860,40 @@ async def help_handler(message: Message) -> None:
 # ============================================================
 
 
-@router.message(F.text == "💵 Меню продажника")
+@router.message(F.text == "💵 Sales Menu")
 async def sales_menu_handler(message: Message, state: FSMContext) -> None:
     await state.clear()
     await message.answer(
-        "💵 <b>МЕНЮ ПРОДАЖНИКА</b>\n\n"
-        "Это информационный раздел. Производственные расчёты здесь недоступны.",
+        "💵 <b>SALES MENU</b>\n\n"
+        "This is an information section. Production calculations are not available here.",
         reply_markup=SALES_MENU,
     )
 
 
-@router.message(F.text == "💰 Обычные цены")
+@router.message(F.text == "💰 Retail Prices")
 async def retail_prices_handler(message: Message) -> None:
-    lines = ["💰 <b>ЦЕНА ЗА 1 yd³ БЕТОНА</b>", ""]
+    lines = ["💰 <b>PRICE PER 1 yd³ OF CONCRETE</b>", ""]
     for psi, price in RETAIL_PRICES.items():
         lines.append(f"{psi} PSI — <b>{fmt_money(price)}</b>")
     await message.answer("\n".join(lines), reply_markup=SALES_MENU)
 
 
-@router.message(F.text == "🤝 FOB цены")
+@router.message(F.text == "🤝 FOB Prices")
 async def fob_prices_handler(message: Message) -> None:
     lines = [
-        "🤝 <b>FOB ЦЕНЫ ДЛЯ КОНТРАКТНИКОВ</b>",
-        "Цена за 1 yd³:",
+        "🤝 <b>FOB PRICES FOR CONTRACT CUSTOMERS</b>",
+        "Price per 1 yd³:",
         "",
     ]
     for psi, price in FOB_CONTRACT_PRICES.items():
         lines.append(f"{psi} PSI — <b>{fmt_money(price)}</b>")
-    lines += ["", "💳 Все FOB-контрактники работают на условиях <b>COD</b>."]
+    lines += ["", "💳 All FOB contract customers pay on <b>COD terms</b>."]
     await message.answer("\n".join(lines), reply_markup=SALES_MENU)
 
 
-@router.message(F.text == "➕ Добавки")
+@router.message(F.text == "➕ Additives")
 async def additives_prices_handler(message: Message) -> None:
-    lines = ["➕ <b>ДОБАВКИ — ЦЕНА ЗА 1 yd³</b>", ""]
+    lines = ["➕ <b>ADDITIVES — PRICE PER 1 yd³</b>", ""]
     for name, price in ADDITIVE_PRICES.items():
         lines.append(f"{name} — <b>{fmt_money(price)}</b>")
     await message.answer("\n".join(lines), reply_markup=SALES_MENU)
@@ -902,28 +903,28 @@ async def additives_prices_handler(message: Message) -> None:
 async def short_load_handler(message: Message) -> None:
     lines = [
         "🚚 <b>SHORT LOAD FEE</b>",
-        "Применяется при заказе менее 10 yd³.",
+        "Applies when the order is less than 10 yd³.",
         "",
     ]
     for yards, fee in SHORT_LOAD_FEES.items():
         lines.append(f"{yards} yd³ — <b>{fmt_money(fee)}</b>")
     lines += [
         "",
-        "⚠️ Тариф для 6–9 yd³ в предоставленных данных не указан. "
-        "Продажник должен уточнить его у руководителя.",
+        "⚠️ The rate for 6–9 yd³ was not provided. "
+        "The salesperson must confirm it with management.",
     ]
     await message.answer("\n".join(lines), reply_markup=SALES_MENU)
 
 
-@router.message(F.text == "🕒 Часы и условия")
+@router.message(F.text == "🕒 Hours & Terms")
 async def hours_handler(message: Message) -> None:
     await message.answer(
-        "🕒 <b>РАБОЧЕЕ ВРЕМЯ И УСЛОВИЯ</b>\n\n"
-        "Понедельник–пятница: <b>6:00 AM – 5:00 PM</b>\n"
-        "Суббота: <b>6:00 AM – 12:00 PM</b>\n\n"
-        "🌙 После 5:00 PM открытие завода для производства: "
-        "<b>$1 000 fee</b>. Количество ярдов значения не имеет.\n\n"
-        "💳 Все FOB-контрактники: <b>COD terms</b>.",
+        "🕒 <b>WORKING HOURS & TERMS</b>\n\n"
+        "Monday–Friday: <b>6:00 AM – 5:00 PM</b>\n"
+        "Saturday: <b>6:00 AM – 12:00 PM</b>\n\n"
+        "🌙 Opening the plant after 5:00 PM for production: "
+        "<b>$1,000 fee</b>, regardless of the number of yards.\n\n"
+        "💳 All FOB contract customers: <b>COD terms</b>.",
         reply_markup=SALES_MENU,
     )
 
@@ -933,10 +934,10 @@ async def hours_handler(message: Message) -> None:
 # ============================================================
 
 
-@router.message(F.text == "🔐 Производство")
+@router.message(F.text == "🔐 Production")
 async def production_entry_handler(message: Message, state: FSMContext) -> None:
     if is_authorized(message.from_user.id):
-        await message.answer("Производственное меню.", reply_markup=OPERATOR_MENU)
+        await message.answer("Production menu.", reply_markup=OPERATOR_MENU)
         return
     await ask_for_password(message, state)
 
@@ -953,22 +954,22 @@ async def password_handler(message: Message, state: FSMContext) -> None:
         authorized_users.add(message.from_user.id)
         await state.clear()
         await message.answer(
-            "✅ Доступ разрешён.",
+            "✅ Access granted.",
             reply_markup=OPERATOR_MENU,
         )
         return
 
     await message.answer(
-        "❌ Неверный пароль. Попробуйте ещё раз или нажмите /cancel."
+        "❌ Wrong password. Try again or press /cancel."
     )
 
 
-@router.message(F.text == "🔓 Выйти")
+@router.message(F.text == "🔓 Logout")
 async def logout_handler(message: Message, state: FSMContext) -> None:
     authorized_users.discard(message.from_user.id)
     await state.clear()
     await message.answer(
-        "Производственный доступ закрыт.",
+        "Production access closed.",
         reply_markup=MAIN_MENU,
     )
 
@@ -978,19 +979,19 @@ async def logout_handler(message: Message, state: FSMContext) -> None:
 # ============================================================
 
 
-@router.message(F.text == "🧮 Новый расчёт")
+@router.message(F.text == "🧮 New Calculation")
 async def new_order_handler(message: Message, state: FSMContext) -> None:
     if not await require_operator(message, state):
         return
     await state.set_state(OrderState.choosing_psi)
-    await message.answer("Выберите прочность бетона:", reply_markup=psi_keyboard())
+    await message.answer("Choose concrete strength:", reply_markup=psi_keyboard())
 
 
 @router.callback_query(OrderState.choosing_psi, F.data.startswith("psi:"))
 async def choose_psi_handler(callback: CallbackQuery, state: FSMContext) -> None:
     psi = int(callback.data.split(":", maxsplit=1)[1])
     if psi not in RETAIL_PRICES:
-        await callback.answer("Неизвестный PSI", show_alert=True)
+        await callback.answer("Unknown PSI", show_alert=True)
         return
 
     await state.update_data(psi=psi)
@@ -998,7 +999,7 @@ async def choose_psi_handler(callback: CallbackQuery, state: FSMContext) -> None
     await callback.answer()
     if callback.message:
         await callback.message.edit_text(
-            f"Выбрано: <b>{psi} PSI</b>\nТеперь выберите тип смеси:",
+            f"Selected: <b>{psi} PSI</b>\nNow choose the mix type:",
             reply_markup=air_keyboard(),
         )
 
@@ -1012,7 +1013,7 @@ async def choose_air_handler(callback: CallbackQuery, state: FSMContext) -> None
     mix_key = f"{psi}_{'air' if air else 'no_air'}"
 
     if mix_key not in RECIPES:
-        await callback.answer("Рецептура не найдена", show_alert=True)
+        await callback.answer("Recipe not found", show_alert=True)
         return
 
     await state.update_data(mix_key=mix_key)
@@ -1020,9 +1021,9 @@ async def choose_air_handler(callback: CallbackQuery, state: FSMContext) -> None
     await callback.answer()
     if callback.message:
         await callback.message.edit_text(
-            f"Смесь: <b>{RECIPES[mix_key]['name']}</b>\n\n"
-            "Введите объём заказа в кубических ярдах.\n"
-            "Можно через точку или запятую: <code>7.15</code> или <code>7,15</code>."
+            f"Mix: <b>{RECIPES[mix_key]['name']}</b>\n\n"
+            "Enter the order volume in cubic yards.\n"
+            "You can use a dot or a comma: <code>7.15</code> or <code>7,15</code>."
         )
 
 
@@ -1044,7 +1045,7 @@ async def yards_handler(message: Message, state: FSMContext) -> None:
     if mix_key not in RECIPES:
         await state.clear()
         await message.answer(
-            "Рецептура не выбрана. Начните новый расчёт.",
+            "No recipe selected. Start a new calculation.",
             reply_markup=OPERATOR_MENU,
         )
         return
@@ -1059,29 +1060,29 @@ async def yards_handler(message: Message, state: FSMContext) -> None:
 
 
 @router.message(Command("history"))
-@router.message(F.text == "📚 История")
+@router.message(F.text == "📚 History")
 async def history_handler(message: Message, state: FSMContext) -> None:
     if not await require_operator(message, state):
         return
 
     rows = await get_recent_orders(message.from_user.id)
     if not rows:
-        await message.answer("История пока пустая.", reply_markup=OPERATOR_MENU)
+        await message.answer("History is empty so far.", reply_markup=OPERATOR_MENU)
         return
 
-    lines = ["📚 <b>ПОСЛЕДНИЕ РАСЧЁТЫ</b>", ""]
+    lines = ["📚 <b>RECENT CALCULATIONS</b>", ""]
     for row in rows:
         mix_key = row["mix_key"]
-        mix_name = RECIPES[mix_key]["name"] if mix_key in RECIPES else "Старая рецептура"
+        mix_name = RECIPES[mix_key]["name"] if mix_key in RECIPES else "Old recipe"
         warning = " ⚠️" if row["has_warning"] else ""
         created = row["created_at"].strftime("%d.%m.%Y %H:%M")
         lines.append(
             f"№{row['id']} — <b>{mix_name}</b> — "
             f"{fmt_decimal(Decimal(row['yards']), 3)} yd³ — "
-            f"{row['cycles_count']} цикл(ов){warning}\n"
+            f"{row['cycles_count']} cycle(s){warning}\n"
             f"   {created}"
         )
-    lines += ["", "Открыть расчёт: <code>/order НОМЕР</code>"]
+    lines += ["", "Open a calculation: <code>/order NUMBER</code>"]
     await message.answer("\n".join(lines), reply_markup=OPERATOR_MENU)
 
 
@@ -1092,20 +1093,20 @@ async def order_handler(message: Message, state: FSMContext) -> None:
 
     parts = (message.text or "").split(maxsplit=1)
     if len(parts) != 2 or not parts[1].isdigit():
-        await message.answer("Пример: <code>/order 15</code>")
+        await message.answer("Example: <code>/order 15</code>")
         return
 
     order_id = int(parts[1])
     row = await get_order(message.from_user.id, order_id)
     if row is None:
-        await message.answer("Такой заказ не найден.")
+        await message.answer("That order was not found.")
         return
 
     mix_key = row["mix_key"]
     if mix_key not in RECIPES:
         await message.answer(
-            "Это заказ из старой версии бота без сохранённого типа рецептуры. "
-            "Повторный расчёт невозможен."
+            "This order belongs to an older bot version without a saved recipe type. "
+            "Recalculation is not possible."
         )
         return
 
@@ -1121,7 +1122,7 @@ async def order_handler(message: Message, state: FSMContext) -> None:
 @router.message()
 async def fallback_handler(message: Message) -> None:
     await message.answer(
-        "Используйте кнопки меню. Для начала нажмите /start.",
+        "Use the menu buttons. To begin, press /start.",
         reply_markup=MAIN_MENU,
     )
 
