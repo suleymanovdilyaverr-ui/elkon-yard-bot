@@ -1,38 +1,76 @@
-# 28 CONCRETE Smart Cycle Bot
+# 28 CONCRETE Volume & Smart Cycle Bot
 
 A production-ready English Telegram bot for 28 CONCRETE.
 
-## Included features
+## Roles
 
-### Two roles only
+The bot has only two roles:
 
-- **Administrator** — full access to production calculations, history, smart cycle optimization, cycle-by-cycle material details, roles, prices, recipes, and settings.
-- **Salesperson** — access to retail prices, FOB prices, additives, short-load fees, and working terms.
+- **Administrator** — full access to production calculations, Smart Batch Optimizer, cycle-by-cycle material details, history, users, prices, recipes, and settings.
+- **Salesperson** — access to sales information and the Concrete Volume Calculator.
 
-There is no shared password and no Operator role. Access is assigned by Telegram ID.
+Access is assigned by numeric Telegram ID. There is no shared password.
 
-### Smart Batch Optimizer
+## Concrete Volume Calculator
 
-The bot first creates the standard ELKON cycle plan using the configured maximum cycle size. If the final cycle is below the configured minimum, it proposes an evenly distributed optimized plan. The administrator must explicitly choose:
+The new calculator is available from the main menu and the Sales Menu. It supports:
+
+- Rectangular Slab / Driveway / Sidewalk
+- Continuous Footing
+- Concrete Wall
+- Round Column / Pier
+- Curb / Grade Beam
+- Circular Slab
+
+The user enters dimensions in feet and inches, quantity, and waste percentage. The bot returns:
+
+- raw volume in cubic feet;
+- base volume in cubic yards;
+- waste allowance;
+- exact total in yd³ and m³;
+- recommended order rounded up to the nearest 0.25 yd³.
+
+Command:
+
+```text
+/volume
+```
+
+Example for a slab:
+
+```text
+Length: 40 ft
+Width: 20 ft
+Thickness: 4 in
+Quantity: 1
+Waste: 5%
+
+Exact total: 10.370 yd³
+Recommended order: 10.50 yd³
+```
+
+## Smart Batch Optimizer
+
+The bot first creates the standard ELKON cycle plan. If the last cycle is below the configured minimum, the administrator can choose:
 
 - **Use Optimized Plan**
 - **Keep Standard Plan**
 - **Cancel**
 
-The bot never silently changes the production plan.
+The bot never changes a production plan without administrator confirmation.
 
-### Calculation by every cycle
+## Calculation by every cycle
 
-After the cycle plan is selected, the bot shows every cycle separately with:
+The production result includes every cycle separately with:
 
-- cycle volume in m³ and yd³;
+- volume in m³ and yd³;
 - Cement, Stone, Sand, and Water;
 - Sikament 475, Air, and SikaFume 290;
 - total cycle weight.
 
-### Existing functionality retained
+## Other included functions
 
-- 10 certified concrete mixes from 3000 to 5000 PSI, Air and Non-Air;
+- 10 certified mixes from 3000 to 5000 PSI, Air and Non-Air;
 - exact yd³ to m³ conversion;
 - ELKON recipe per 1 m³;
 - total materials for the order;
@@ -44,7 +82,7 @@ After the cycle plan is selected, the bot shows every cycle separately with:
 
 - `BOT_TOKEN`
 - `WEBHOOK_SECRET`
-- `ADMIN_TELEGRAM_IDS` — comma-separated numeric Telegram IDs
+- `ADMIN_TELEGRAM_IDS`
 - `DATABASE_URL` — normally linked automatically by the Render Blueprint
 
 Example:
@@ -66,10 +104,23 @@ Administrator commands:
 
 Roles can also be managed through **Admin Settings → Users & Roles**.
 
-## Deploy
+## Deployment
 
-1. Upload all project files to the root of the GitHub repository.
-2. Confirm that the English file is named exactly `main.py`.
-3. In Render, set the required environment variables.
+1. Upload all files to the root of the GitHub repository.
+2. Confirm that the main program file is named exactly `main.py`.
+3. In Render, verify all required environment variables.
 4. Run **Manual Deploy → Clear build cache & deploy**.
-5. After the service becomes Live, send `/start` to the Telegram bot.
+5. Wait for the service to become **Live**.
+6. Send `/start` to the Telegram bot.
+
+## Deployment verification
+
+Open the Render service URL. The health response should contain:
+
+```json
+{
+  "service": "28-concrete-volume-smart-cycle-bot",
+  "version": "4.0-volume-calculator",
+  "concrete_volume_calculator": true
+}
+```

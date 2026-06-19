@@ -65,6 +65,65 @@ WEBHOOK_URL = WEBHOOK_BASE_URL.rstrip("/") + WEBHOOK_PATH
 YD3_TO_M3 = Decimal("0.764554858")
 LB_TO_KG = Decimal("0.45359237")
 VOL_6 = Decimal("0.000001")
+PI = Decimal("3.141592653589793")
+CUBIC_FEET_PER_YD3 = Decimal("27")
+CUBIC_FEET_TO_M3 = Decimal("0.028316846592")
+ORDER_ROUNDING_YD3 = Decimal("0.25")
+
+VOLUME_SHAPES = {
+    "slab": {
+        "label": "Rectangular Slab / Driveway / Sidewalk",
+        "fields": [
+            ("length_ft", "Length", "ft"),
+            ("width_ft", "Width", "ft"),
+            ("thickness_in", "Thickness", "in"),
+            ("quantity", "Number of identical sections", "pcs"),
+        ],
+    },
+    "footing": {
+        "label": "Continuous Footing",
+        "fields": [
+            ("length_ft", "Total length", "ft"),
+            ("width_in", "Width", "in"),
+            ("depth_in", "Depth", "in"),
+            ("quantity", "Number of identical footings", "pcs"),
+        ],
+    },
+    "wall": {
+        "label": "Concrete Wall",
+        "fields": [
+            ("length_ft", "Length", "ft"),
+            ("height_ft", "Height", "ft"),
+            ("thickness_in", "Thickness", "in"),
+            ("quantity", "Number of identical walls", "pcs"),
+        ],
+    },
+    "round_column": {
+        "label": "Round Column / Pier",
+        "fields": [
+            ("diameter_in", "Diameter", "in"),
+            ("height_ft", "Height", "ft"),
+            ("quantity", "Number of columns", "pcs"),
+        ],
+    },
+    "curb": {
+        "label": "Curb / Grade Beam",
+        "fields": [
+            ("length_ft", "Total length", "ft"),
+            ("width_in", "Width", "in"),
+            ("height_in", "Height", "in"),
+            ("quantity", "Number of identical sections", "pcs"),
+        ],
+    },
+    "circular_slab": {
+        "label": "Circular Slab",
+        "fields": [
+            ("diameter_ft", "Diameter", "ft"),
+            ("thickness_in", "Thickness", "in"),
+            ("quantity", "Number of circular slabs", "pcs"),
+        ],
+    },
+}
 
 VALID_ROLES = {"salesperson", "admin"}
 ROLE_LABELS = {
@@ -264,6 +323,12 @@ class AdminEditState(StatesGroup):
     confirming = State()
 
 
+class VolumeCalcState(StatesGroup):
+    choosing_shape = State()
+    waiting_value = State()
+    waiting_waste = State()
+
+
 SALES_MENU = ReplyKeyboardMarkup(
     keyboard=[
         [
@@ -275,6 +340,7 @@ SALES_MENU = ReplyKeyboardMarkup(
             KeyboardButton(text="🚚 Short Load Fee"),
         ],
         [KeyboardButton(text="🕒 Hours & Terms")],
+        [KeyboardButton(text="📐 Concrete Volume Calculator")],
         [KeyboardButton(text="⬅️ Main Menu")],
     ],
     resize_keyboard=True,
@@ -332,6 +398,9 @@ def main_menu_for_role(role: str | None) -> ReplyKeyboardMarkup:
         )
         rows.append([KeyboardButton(text="⚙️ Admin Settings")])
 
+    if role in {"salesperson", "admin"}:
+        rows.append([KeyboardButton(text="📐 Concrete Volume Calculator")])
+
     rows.append(
         [
             KeyboardButton(text="🆔 My Telegram ID"),
@@ -364,6 +433,20 @@ def air_keyboard() -> InlineKeyboardMarkup:
                 InlineKeyboardButton(text="Non-Air", callback_data="air:0"),
                 InlineKeyboardButton(text="Air", callback_data="air:1"),
             ]
+        ]
+    )
+
+
+def volume_shape_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="▭ Slab / Driveway", callback_data="volume:shape:slab")],
+            [InlineKeyboardButton(text="▱ Continuous Footing", callback_data="volume:shape:footing")],
+            [InlineKeyboardButton(text="▥ Concrete Wall", callback_data="volume:shape:wall")],
+            [InlineKeyboardButton(text="◯ Round Column / Pier", callback_data="volume:shape:round_column")],
+            [InlineKeyboardButton(text="▰ Curb / Grade Beam", callback_data="volume:shape:curb")],
+            [InlineKeyboardButton(text="● Circular Slab", callback_data="volume:shape:circular_slab")],
+            [InlineKeyboardButton(text="❌ Cancel", callback_data="volume:cancel")],
         ]
     )
 
@@ -828,7 +911,7 @@ def fmt_money(value: Decimal) -> str:
 
 
 def parse_decimal_input(text: str, *, positive: bool = True) -> Decimal:
-    cleaned = text.strip().replace(",", ".").replace("$", "")
+    cleaned = text.strip().replace(",", ".").replace("$", "").replace("%", "")
     cleaned = re.sub(r"\s+", "", cleaned)
     try:
         value = Decimal(cleaned)
@@ -857,6 +940,157 @@ def parse_yards(text: str) -> Decimal:
             f"Maximum for one calculation: {fmt_decimal(MAX_ORDER_YD3, 2)} yd³."
         )
     return value
+
+
+def round_up_to_increment(value: Decimal, increment: Decimal) -> Decimal:
+    if value <= 0:
+        return Decimal("0")
+    units = (value / increment).to_integral_value(rounding=ROUND_CEILING)
+    return units * increment
+
+
+def calculate_concrete_volume(
+    shape_key: str,
+    values: dict[str, Decimal],
+    waste_pct: Decimal,
+) -> dict:
+    if shape_key not in VOLUME_SHAPES:
+        raise ValueError("Unknown concrete shape.")
+    if waste_pct < 0 or waste_pct > 50:
+        raise ValueError("Waste percentage must be between 0 and 50.")
+
+    quantity = values.get("quantity", Decimal("1"))
+    if quantity <= 0 or quantity != quantity.to_integral_value():
+        raise ValueError("Quantity must be a positive whole number.")
+
+    if shape_key == "slab":
+        cubic_feet = (
+            values["length_ft"]
+            * values["width_ft"]
+            * (values["thickness_in"] / Decimal("12"))
+            * quantity
+        )
+        formula = "Length × Width × Thickness × Quantity"
+    elif shape_key == "footing":
+        cubic_feet = (
+            values["length_ft"]
+            * (values["width_in"] / Decimal("12"))
+            * (values["depth_in"] / Decimal("12"))
+            * quantity
+        )
+        formula = "Length × Width × Depth × Quantity"
+    elif shape_key == "wall":
+        cubic_feet = (
+            values["length_ft"]
+            * values["height_ft"]
+            * (values["thickness_in"] / Decimal("12"))
+            * quantity
+        )
+        formula = "Length × Height × Thickness × Quantity"
+    elif shape_key == "round_column":
+        radius_ft = values["diameter_in"] / Decimal("24")
+        cubic_feet = PI * radius_ft * radius_ft * values["height_ft"] * quantity
+        formula = "π × Radius² × Height × Quantity"
+    elif shape_key == "curb":
+        cubic_feet = (
+            values["length_ft"]
+            * (values["width_in"] / Decimal("12"))
+            * (values["height_in"] / Decimal("12"))
+            * quantity
+        )
+        formula = "Length × Width × Height × Quantity"
+    elif shape_key == "circular_slab":
+        radius_ft = values["diameter_ft"] / Decimal("2")
+        cubic_feet = (
+            PI
+            * radius_ft
+            * radius_ft
+            * (values["thickness_in"] / Decimal("12"))
+            * quantity
+        )
+        formula = "π × Radius² × Thickness × Quantity"
+    else:
+        raise ValueError("Unknown concrete shape.")
+
+    if cubic_feet <= 0:
+        raise ValueError("Calculated volume must be greater than zero.")
+
+    base_yd3 = cubic_feet / CUBIC_FEET_PER_YD3
+    waste_yd3 = base_yd3 * waste_pct / Decimal("100")
+    total_yd3 = base_yd3 + waste_yd3
+    recommended_yd3 = round_up_to_increment(total_yd3, ORDER_ROUNDING_YD3)
+    extra_yd3 = recommended_yd3 - total_yd3
+
+    return {
+        "shape_key": shape_key,
+        "shape_label": VOLUME_SHAPES[shape_key]["label"],
+        "values": values,
+        "formula": formula,
+        "cubic_feet": cubic_feet,
+        "base_yd3": base_yd3,
+        "waste_pct": waste_pct,
+        "waste_yd3": waste_yd3,
+        "total_yd3": total_yd3,
+        "recommended_yd3": recommended_yd3,
+        "extra_yd3": extra_yd3,
+        "total_m3": total_yd3 * YD3_TO_M3,
+        "recommended_m3": recommended_yd3 * YD3_TO_M3,
+    }
+
+
+def build_volume_result(calc: dict) -> str:
+    lines = [
+        "📐 <b>CONCRETE VOLUME RESULT</b>",
+        "",
+        f"Shape: <b>{escape(calc['shape_label'])}</b>",
+        f"Formula: <code>{escape(calc['formula'])}</code>",
+        "",
+        "<b>Dimensions</b>",
+    ]
+
+    shape = VOLUME_SHAPES[calc["shape_key"]]
+    for key, label, unit in shape["fields"]:
+        value = calc["values"][key]
+        places = 0 if key == "quantity" else 3
+        if key == "quantity":
+            lines.append(f"{label}: <b>{fmt_decimal(value, places)}</b>")
+        else:
+            lines.append(f"{label}: <b>{fmt_decimal(value, places)} {unit}</b>")
+
+    lines += [
+        "",
+        f"Raw volume: <b>{fmt_decimal(calc['cubic_feet'], 3)} ft³</b>",
+        f"Base concrete: <b>{fmt_decimal(calc['base_yd3'], 3)} yd³</b>",
+        f"Waste allowance: <b>{fmt_decimal(calc['waste_pct'], 2)}%</b> "
+        f"(+{fmt_decimal(calc['waste_yd3'], 3)} yd³)",
+        "",
+        f"Exact total: <b>{fmt_decimal(calc['total_yd3'], 3)} yd³</b>",
+        f"Exact total in metric: <b>{fmt_decimal(calc['total_m3'], 6)} m³</b>",
+        "",
+        f"✅ Recommended order: <b>{fmt_decimal(calc['recommended_yd3'], 2)} yd³</b>",
+        f"Recommended metric volume: <b>{fmt_decimal(calc['recommended_m3'], 6)} m³</b>",
+        f"Rounding allowance: <b>{fmt_decimal(calc['extra_yd3'], 3)} yd³</b>",
+        "",
+        "The recommended order is rounded up to the nearest 0.25 yd³. "
+        "Final field conditions, subgrade, form dimensions, and waste should be verified before ordering.",
+    ]
+    return "\n".join(lines)
+
+
+def volume_field_prompt(shape_key: str, field_index: int) -> str:
+    shape = VOLUME_SHAPES[shape_key]
+    key, label, unit = shape["fields"][field_index]
+    if key == "quantity":
+        return (
+            f"<b>{shape['label']}</b>\n\n"
+            f"Enter {label.lower()} as a whole number.\n"
+            "Example: <code>1</code>"
+        )
+    return (
+        f"<b>{shape['label']}</b>\n\n"
+        f"Enter {label.lower()} in <b>{unit}</b>.\n"
+        "You can use a dot or comma, for example <code>12.5</code>."
+    )
 
 
 def split_standard_cycles(total_m3: Decimal) -> list[Decimal]:
@@ -1499,8 +1733,8 @@ async def help_handler(message: Message) -> None:
     role = await get_user_role(message.from_user.id)
     await message.answer(
         "<b>28 CONCRETE Bot</b>\n\n"
-        "Salesperson: sales prices, additives, short-load fees, and commercial terms.\n"
-        "Administrator: full access, including production calculations, smart cycle optimization, cycle-by-cycle details, user roles, prices, settings, and recipes.\n\n"
+        "Salesperson: sales prices, additives, short-load fees, commercial terms, and the concrete volume calculator.\n"
+        "Administrator: full access, including the concrete volume calculator, production calculations, smart cycle optimization, cycle-by-cycle details, user roles, prices, settings, and recipes.\n\n"
         "Use /myid to display your Telegram ID. An administrator assigns access by Telegram ID.",
         reply_markup=main_menu_for_role(role),
     )
@@ -1575,6 +1809,144 @@ async def hours_handler(message: Message) -> None:
         f"💳 FOB contract customers: <b>{escape(APP_SETTINGS['fob_terms'])} terms</b>.",
         reply_markup=SALES_MENU,
     )
+
+
+# ============================================================
+# CONCRETE VOLUME CALCULATOR
+# ============================================================
+
+
+@router.message(Command("volume"))
+@router.message(F.text == "📐 Concrete Volume Calculator")
+async def volume_calculator_start(message: Message, state: FSMContext) -> None:
+    if not await require_role(message, {"salesperson", "admin"}):
+        return
+    await state.clear()
+    await state.set_state(VolumeCalcState.choosing_shape)
+    await message.answer(
+        "📐 <b>CONCRETE VOLUME CALCULATOR</b>\n\n"
+        "Choose the structure type. The calculator uses feet, inches, and cubic yards.",
+        reply_markup=volume_shape_keyboard(),
+    )
+
+
+@router.callback_query(VolumeCalcState.choosing_shape, F.data == "volume:cancel")
+async def volume_calculator_cancel(callback: CallbackQuery, state: FSMContext) -> None:
+    await state.clear()
+    await callback.answer("Cancelled")
+    if callback.message:
+        await callback.message.edit_text("❌ Volume calculation cancelled.")
+        await callback.message.answer("💵 <b>SALES MENU</b>", reply_markup=SALES_MENU)
+
+
+@router.callback_query(
+    VolumeCalcState.choosing_shape,
+    F.data.startswith("volume:shape:"),
+)
+async def volume_shape_selected(callback: CallbackQuery, state: FSMContext) -> None:
+    if not await require_callback_role(callback, {"salesperson", "admin"}):
+        return
+    shape_key = callback.data.split(":", maxsplit=2)[2]
+    if shape_key not in VOLUME_SHAPES:
+        await callback.answer("Unknown shape", show_alert=True)
+        return
+
+    await state.update_data(shape_key=shape_key, field_index=0, values={})
+    await state.set_state(VolumeCalcState.waiting_value)
+    await callback.answer()
+    if callback.message:
+        await callback.message.edit_text(volume_field_prompt(shape_key, 0))
+
+
+@router.message(VolumeCalcState.waiting_value)
+async def volume_value_handler(message: Message, state: FSMContext) -> None:
+    if not await require_role(message, {"salesperson", "admin"}):
+        await state.clear()
+        return
+
+    data = await state.get_data()
+    shape_key = data.get("shape_key")
+    field_index = int(data.get("field_index", 0))
+    if shape_key not in VOLUME_SHAPES:
+        await state.clear()
+        await message.answer("Calculation data expired. Start again.", reply_markup=SALES_MENU)
+        return
+
+    fields = VOLUME_SHAPES[shape_key]["fields"]
+    if field_index >= len(fields):
+        await state.clear()
+        await message.answer("Calculation data expired. Start again.", reply_markup=SALES_MENU)
+        return
+
+    key, label, unit = fields[field_index]
+    try:
+        value = parse_decimal_input(message.text or "", positive=True)
+    except ValueError as error:
+        await message.answer(str(error))
+        return
+
+    if key == "quantity":
+        if value != value.to_integral_value():
+            await message.answer("Quantity must be a whole number, for example <code>1</code>.")
+            return
+        if value > 1000:
+            await message.answer("Quantity cannot exceed 1,000 in one calculation.")
+            return
+    elif value > Decimal("100000"):
+        await message.answer(f"{label} is too large. Check the entered unit ({unit}).")
+        return
+
+    values = dict(data.get("values", {}))
+    values[key] = str(value)
+    next_index = field_index + 1
+
+    if next_index < len(fields):
+        await state.update_data(values=values, field_index=next_index)
+        await message.answer(volume_field_prompt(shape_key, next_index))
+        return
+
+    await state.update_data(values=values)
+    await state.set_state(VolumeCalcState.waiting_waste)
+    await message.answer(
+        "Enter the waste allowance percentage.\n"
+        "Recommended starting point: <code>5</code>\n"
+        "Enter <code>0</code> for no waste allowance."
+    )
+
+
+@router.message(VolumeCalcState.waiting_waste)
+async def volume_waste_handler(message: Message, state: FSMContext) -> None:
+    if not await require_role(message, {"salesperson", "admin"}):
+        await state.clear()
+        return
+
+    try:
+        waste_pct = parse_decimal_input(message.text or "", positive=False)
+    except ValueError as error:
+        await message.answer(str(error))
+        return
+    if waste_pct > Decimal("50"):
+        await message.answer("Waste percentage cannot exceed 50%.")
+        return
+
+    data = await state.get_data()
+    shape_key = data.get("shape_key")
+    raw_values = data.get("values", {})
+    if shape_key not in VOLUME_SHAPES:
+        await state.clear()
+        await message.answer("Calculation data expired. Start again.", reply_markup=SALES_MENU)
+        return
+
+    try:
+        values = {key: Decimal(str(value)) for key, value in raw_values.items()}
+        calc = calculate_concrete_volume(shape_key, values, waste_pct)
+    except (ValueError, InvalidOperation, KeyError) as error:
+        await state.clear()
+        await message.answer(f"Calculation failed: {escape(str(error))}", reply_markup=SALES_MENU)
+        return
+
+    await state.clear()
+    await message.answer(build_volume_result(calc), reply_markup=SALES_MENU)
 
 
 # ============================================================
@@ -2123,19 +2495,21 @@ async def lifespan(_: FastAPI):
     await bot.session.close()
 
 
-app = FastAPI(title="28 CONCRETE Smart Cycle Bot", lifespan=lifespan)
+app = FastAPI(title="28 CONCRETE Volume & Smart Cycle Bot", lifespan=lifespan)
 
 
 @app.get("/")
 async def health():
     return {
         "status": "ok",
-        "service": "28-concrete-smart-cycle-bot",
+        "service": "28-concrete-volume-smart-cycle-bot",
         "recipes": len(RECIPES),
         "role_system": True,
         "available_roles": ["admin", "salesperson"],
         "smart_cycle_optimizer": True,
         "cycle_by_cycle_calculation": True,
+        "concrete_volume_calculator": True,
+        "version": "4.0-volume-calculator",
         "bootstrap_admins": len(BOOTSTRAP_ADMIN_IDS),
         "webhook_path": WEBHOOK_PATH,
     }
