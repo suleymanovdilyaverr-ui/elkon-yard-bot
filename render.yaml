@@ -22,11 +22,5 @@ services:
         sync: false
       - key: WEBHOOK_SECRET
         sync: false
-      - key: OPERATOR_PASSWORD
+      - key: ADMIN_TELEGRAM_IDS
         sync: false
-      - key: MIN_CYCLE_M3
-        value: "0.20"
-      - key: MAX_CYCLE_M3
-        value: "0.5"
-      - key: MAX_ORDER_YD3
-        value: "100"

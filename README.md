@@ -1,59 +1,75 @@
-# 28 CONCRETE Telegram Bot (English Version)
+# 28 CONCRETE Smart Cycle Bot
 
-This is the fully English version of the Telegram bot for **28 CONCRETE**.
+A production-ready English Telegram bot for 28 CONCRETE.
 
-## Features
+## Included features
 
-- Sales menu in English
-- Production calculator in English
-- 10 certified concrete recipes
-  - 3000 PSI: Air / Non-Air
-  - 3500 PSI: Air / Non-Air
-  - 4000 PSI: Air / Non-Air
-  - 4500 PSI: Air / Non-Air
-  - 5000 PSI: Air / Non-Air
-- Password protection for the production area
-- Accepts `7.15` and `7,15`
-- Calculates total cubic meters for ELKON
-- Shows recipe per **1 m³**
-- Shows total materials for the full order
-- Shows each cycle separately
-- Warns if the last cycle is smaller than the configured minimum
-- Stores order history in PostgreSQL
-- Render-ready webhook deployment
+### Two roles only
 
-## Main Menus
+- **Administrator** — full access to production calculations, history, smart cycle optimization, cycle-by-cycle material details, roles, prices, recipes, and settings.
+- **Salesperson** — access to retail prices, FOB prices, additives, short-load fees, and working terms.
 
-### Sales Menu
-- Retail Prices
-- FOB Prices
-- Additives
-- Short Load Fee
-- Hours & Terms
+There is no shared password and no Operator role. Access is assigned by Telegram ID.
 
-### Production Menu (password protected)
-- New Calculation
-- History
-- Logout
+### Smart Batch Optimizer
 
-## Required Render Environment Variables
+The bot first creates the standard ELKON cycle plan using the configured maximum cycle size. If the final cycle is below the configured minimum, it proposes an evenly distributed optimized plan. The administrator must explicitly choose:
+
+- **Use Optimized Plan**
+- **Keep Standard Plan**
+- **Cancel**
+
+The bot never silently changes the production plan.
+
+### Calculation by every cycle
+
+After the cycle plan is selected, the bot shows every cycle separately with:
+
+- cycle volume in m³ and yd³;
+- Cement, Stone, Sand, and Water;
+- Sikament 475, Air, and SikaFume 290;
+- total cycle weight.
+
+### Existing functionality retained
+
+- 10 certified concrete mixes from 3000 to 5000 PSI, Air and Non-Air;
+- exact yd³ to m³ conversion;
+- ELKON recipe per 1 m³;
+- total materials for the order;
+- PostgreSQL calculation history;
+- editable prices, recipes, short-load fees, and production settings;
+- Render webhook deployment.
+
+## Required Render environment variables
 
 - `BOT_TOKEN`
 - `WEBHOOK_SECRET`
-- `OPERATOR_PASSWORD`
-- `DATABASE_URL` (normally added automatically by Render)
+- `ADMIN_TELEGRAM_IDS` — comma-separated numeric Telegram IDs
+- `DATABASE_URL` — normally linked automatically by the Render Blueprint
 
-## Deploy on Render
+Example:
 
-1. Upload these files to GitHub.
-2. In Render choose **New → Blueprint**.
-3. Connect the repository.
-4. Enter:
-   - `BOT_TOKEN`
-   - `WEBHOOK_SECRET`
-   - `OPERATOR_PASSWORD` = `Aslan`
-5. Deploy.
+```text
+ADMIN_TELEGRAM_IDS=123456789,987654321
+```
 
-## Health Check
+## Role management
 
-Open the root URL of the service. It should return JSON with status `ok`.
+Administrator commands:
+
+```text
+/users
+/setrole TELEGRAM_ID salesperson
+/setrole TELEGRAM_ID admin
+/delrole TELEGRAM_ID
+```
+
+Roles can also be managed through **Admin Settings → Users & Roles**.
+
+## Deploy
+
+1. Upload all project files to the root of the GitHub repository.
+2. Confirm that the English file is named exactly `main.py`.
+3. In Render, set the required environment variables.
+4. Run **Manual Deploy → Clear build cache & deploy**.
+5. After the service becomes Live, send `/start` to the Telegram bot.
